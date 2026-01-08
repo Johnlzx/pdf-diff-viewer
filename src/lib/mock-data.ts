@@ -9,7 +9,7 @@ const colors = {
 export const initialGroups: PDFGroup[] = [
   {
     id: 'group-a',
-    name: 'Document A',
+    name: 'Passport',
     status: 'ready',
     pages: Array.from({ length: 5 }, (_, i) => ({
       id: `group-a-page-${i + 1}`,
@@ -20,7 +20,7 @@ export const initialGroups: PDFGroup[] = [
   },
   {
     id: 'group-b',
-    name: 'Document B',
+    name: 'Bank statement',
     status: 'pending review',
     pages: Array.from({ length: 4 }, (_, i) => ({
       id: `group-b-page-${i + 1}`,
@@ -31,7 +31,7 @@ export const initialGroups: PDFGroup[] = [
   },
   {
     id: 'group-c',
-    name: 'Document C',
+    name: 'Utility Bill',
     status: 'ready',
     pages: Array.from({ length: 6 }, (_, i) => ({
       id: `group-c-page-${i + 1}`,
