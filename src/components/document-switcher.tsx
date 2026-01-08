@@ -95,7 +95,7 @@ export function DocumentSwitcher() {
         align="start"
         sideOffset={6}
         className={cn(
-          'w-64 p-1.5',
+          'w-auto min-w-[280px] p-1.5',
           'bg-white',
           'border border-gray-200',
           'rounded-xl',
@@ -125,7 +125,7 @@ export function DocumentSwitcher() {
             >
               {/* Document Icon */}
               <div className={cn(
-                'w-8 h-8 rounded-lg flex items-center justify-center',
+                'w-8 h-8 rounded-lg flex items-center justify-center shrink-0',
                 group.id === currentGroupId
                   ? 'bg-[#0E4268]/20'
                   : 'bg-gray-100'
@@ -155,16 +155,16 @@ export function DocumentSwitcher() {
               </div>
 
               {/* Document Info */}
-              <div className="flex-1 text-left">
+              <div className="flex-1 text-left min-w-0">
                 <div className="flex items-center gap-2">
                   <p className={cn(
-                    'text-sm font-medium',
+                    'text-sm font-medium whitespace-nowrap',
                     group.id === currentGroupId ? 'text-[#0E4268]' : 'text-gray-700'
                   )}>
                     {group.name}
                   </p>
                   <span className={cn(
-                    'text-[10px] font-medium px-1.5 py-0.5 rounded-full capitalize',
+                    'text-[10px] font-medium px-1.5 py-0.5 rounded-full capitalize whitespace-nowrap shrink-0',
                     group.status === 'ready'
                       ? 'bg-emerald-100 text-emerald-700'
                       : 'bg-amber-100 text-amber-700'
@@ -172,7 +172,7 @@ export function DocumentSwitcher() {
                     {group.status}
                   </span>
                 </div>
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-gray-400 whitespace-nowrap">
                   {group.pages.length} {group.pages.length === 1 ? 'page' : 'pages'}
                 </p>
               </div>
@@ -188,7 +188,7 @@ export function DocumentSwitcher() {
                   strokeWidth="2.5"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  className="text-[#0E4268]"
+                  className="text-[#0E4268] shrink-0"
                 >
                   <polyline points="20 6 9 17 4 12" />
                 </svg>

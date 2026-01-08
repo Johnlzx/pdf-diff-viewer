@@ -15,12 +15,11 @@ interface MoveToSelectorProps {
 
 export function MoveToSelector({ disabled = false }: MoveToSelectorProps) {
   const [open, setOpen] = useState(false);
-  const { groups, currentGroupId, selectedPageId, movePageToGroup, getPageIndex } = usePDF();
+  const { groups, currentGroupId, selectedPageId, movePageToGroup, getCurrentGroup } = usePDF();
 
   const otherGroups = groups.filter((g) => g.id !== currentGroupId);
-  const currentGroup = groups.find((g) => g.id === currentGroupId);
+  const currentGroup = getCurrentGroup();
   const selectedPage = currentGroup?.pages.find((p) => p.id === selectedPageId);
-  const selectedPageIndex = selectedPageId ? getPageIndex(currentGroupId, selectedPageId) : -1;
   const isPageRemoved = selectedPage?.diffStatus === 'removed';
 
   const handleMove = (targetGroupId: string) => {
@@ -94,7 +93,7 @@ export function MoveToSelector({ disabled = false }: MoveToSelectorProps) {
         align="end"
         sideOffset={6}
         className={cn(
-          'w-72 p-0 overflow-hidden',
+          'w-auto min-w-[200px] p-1.5',
           'bg-white',
           'border border-gray-200',
           'rounded-xl',
@@ -102,34 +101,13 @@ export function MoveToSelector({ disabled = false }: MoveToSelectorProps) {
           'animate-in fade-in-0 zoom-in-95 duration-150'
         )}
       >
-        {/* Header */}
-        <div className="px-4 py-3 border-b border-gray-100 bg-gray-50/50">
-          <div className="flex items-center gap-3">
-            {selectedPage && (
-              <div
-                className="w-7 h-10 rounded-md shadow-sm"
-                style={{ backgroundColor: selectedPage.color }}
-              />
-            )}
-            <div>
-              <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">
-                Select destination
-              </p>
-              <p className="text-sm text-gray-700 mt-0.5">
-                {selectedPage ? `Page ${selectedPageIndex + 1}` : 'No page selected'}
-              </p>
-            </div>
+        {otherGroups.length === 0 ? (
+          <div className="px-3 py-4 text-center">
+            <p className="text-sm text-gray-400">No other documents available</p>
           </div>
-        </div>
-
-        {/* Document Options */}
-        <div className="p-1.5 space-y-0.5">
-          {otherGroups.length === 0 ? (
-            <div className="px-3 py-4 text-center">
-              <p className="text-sm text-gray-400">No other documents available</p>
-            </div>
-          ) : (
-            otherGroups.map((group, index) => (
+        ) : (
+          <div className="space-y-0.5">
+            {otherGroups.map((group, index) => (
               <button
                 key={group.id}
                 onClick={() => handleMove(group.id)}
@@ -146,10 +124,10 @@ export function MoveToSelector({ disabled = false }: MoveToSelectorProps) {
                 )}
               >
                 {/* Document Icon */}
-                <div className="w-9 h-9 rounded-lg bg-gray-100 flex items-center justify-center">
+                <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center shrink-0">
                   <svg
-                    width="18"
-                    height="18"
+                    width="16"
+                    height="16"
                     viewBox="0 0 24 24"
                     fill="none"
                     className="text-gray-500"
@@ -168,46 +146,22 @@ export function MoveToSelector({ disabled = false }: MoveToSelectorProps) {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
-                    <line x1="9" y1="13" x2="15" y2="13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                    <line x1="9" y1="17" x2="13" y2="17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                   </svg>
                 </div>
 
                 {/* Document info */}
                 <div className="flex-1 text-left">
-                  <p className="text-sm font-medium text-gray-700">
+                  <p className="text-sm font-medium text-gray-700 whitespace-nowrap">
                     {group.name}
                   </p>
-                  <p className="text-xs text-gray-400 mt-0.5">
+                  <p className="text-xs text-gray-400 whitespace-nowrap">
                     {group.pages.length} {group.pages.length === 1 ? 'page' : 'pages'}
                   </p>
                 </div>
-
-                {/* Arrow */}
-                <svg
-                  width="14"
-                  height="14"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-gray-300"
-                >
-                  <polyline points="9 18 15 12 9 6" />
-                </svg>
               </button>
-            ))
-          )}
-        </div>
-
-        {/* Footer hint */}
-        <div className="px-4 py-2.5 bg-gray-50/80 border-t border-gray-100">
-          <p className="text-xs text-gray-400 text-center">
-            Page will be added to the end of the document
-          </p>
-        </div>
+            ))}
+          </div>
+        )}
       </PopoverContent>
     </Popover>
   );
