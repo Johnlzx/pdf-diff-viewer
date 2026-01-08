@@ -44,6 +44,7 @@ export function PreviewView() {
   const selectedPageIndex = selectedPageId ? getPageIndex(currentGroupId, selectedPageId) : -1;
   const isFirst = selectedPageIndex === 0;
   const isLast = selectedPageIndex === (currentGroup?.pages.length ?? 0) - 1;
+  const isPageRemoved = selectedPage?.diffStatus === 'removed';
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -160,13 +161,13 @@ export function PreviewView() {
           <div className="flex items-center gap-1">
             <button
               onClick={handleMoveUp}
-              disabled={!selectedPageId || isFirst}
+              disabled={!selectedPageId || isFirst || isPageRemoved}
               className={cn(
                 'w-20 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg',
                 'bg-white border border-gray-200',
                 'text-sm font-medium',
                 'transition-all duration-150',
-                !selectedPageId || isFirst
+                !selectedPageId || isFirst || isPageRemoved
                   ? 'opacity-40 cursor-not-allowed text-gray-400'
                   : 'hover:bg-[#0E4268]/5 hover:border-[#0E4268]/30 hover:text-[#0E4268] active:scale-[0.98] text-gray-600'
               )}
@@ -188,13 +189,13 @@ export function PreviewView() {
 
             <button
               onClick={handleMoveDown}
-              disabled={!selectedPageId || isLast}
+              disabled={!selectedPageId || isLast || isPageRemoved}
               className={cn(
                 'w-20 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg',
                 'bg-white border border-gray-200',
                 'text-sm font-medium',
                 'transition-all duration-150',
-                !selectedPageId || isLast
+                !selectedPageId || isLast || isPageRemoved
                   ? 'opacity-40 cursor-not-allowed text-gray-400'
                   : 'hover:bg-[#0E4268]/5 hover:border-[#0E4268]/30 hover:text-[#0E4268] active:scale-[0.98] text-gray-600'
               )}
